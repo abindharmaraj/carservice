@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+    <title>ajtab</title>
+</head>
+
+<body onload="load()">
+
+
+
+
+
+
+    <table class="table" border="1" id="tab">
+        <thead class="thead-dark">
+            <tr>
+
+                <th scope="col">name</th>
+                <th scope="col">address</th>
+                <th scope="col">email</th>
+                <th scope="col">password</th>
+                <th scope="col">delete</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            <tr>
+            </tr>
+        </tbody>
+    </table>
+
+
+    </tbody>
+    </table>
+</body>
+<script>
+    $.ajaxSetup({
+        headers: {
+            "X-CSRFToken": '{{csrf_token}}'
+        }
+    });
+    data = "";
+
+    function load() {
+        $.ajax({
+            url: 'displaydata',
+            type: 'GET',
+            success: function(response) {
+                data = response.data;
+                $('.tr').remove();
+                for (i = 0; i < response.data.length; i++) {
+                    $("#tab").append("<tr class='tr'><td>" + response.data[i].id + "</td><td>" + response.data[i].name + " </td><td>" + response.data[i].email + "</td><td>" + response.data[i].password + "</td><td><button class='btn btn-danger' onclick='delajtab(" + response.data[i].id + ")'>delete</button></td></tr>")
+                }
+            }
+
+        });
+    };
+
+    function delajtab(id) {
+        // console.log(id)
+        $.ajax({
+            url: 'delaj',
+            type: 'POST',
+            data: {
+                key_id: id
+            },
+            success: function(response) {
+                alert(response.message)
+                load()
+
+            }
+        })
+    }
+</script>
+
+</html>

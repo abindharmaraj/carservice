@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+    <title>ajform</title>
+</head>
+
+<body>
+
+
+    <div class="form-group">
+        <label for="exampleInputname">name</label>
+        <input type="text" class="form-control" name="name" id="tname">
+    </div>
+    <div class="form-group">
+        <label for="exampleInputaddress">address</label>
+        <input type="text" class="form-control" name="adrs" id="taddress">
+    </div>
+
+    <div class="form-group">
+        <label for="exampleInputEmail1">email</label>
+        <input type="email" class="form-control" id="temail" name="email" aria-describedby="emailHelp">
+        <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+    </div>
+    <div class="form-group">
+        <label for="exampleInputPassword1">password</label>
+        <input type="password" class="form-control" name="pswd" id="tpassword">
+    </div>
+    <button type="submit" onclick="submit()" class="btn btn-primary">Submit</button>
+</body>
+<script>
+    $.ajaxSetup({
+        headers: {
+            "X-CSRFToken": '{{csrf_token}}'
+        }
+    });
+    data = "";
+
+    function submit() {
+        $.ajax({
+            url: 'ajf',
+            type: 'POST',
+            data: {
+                name: $('#tname').val(),
+                address: $('#taddress').val(),
+                email: $('#temail').val(),
+                password: $('#tpassword').val(),
+            },
+            success: function(response) {
+                alert(response.message)
+                document.getElementById("tname").value = "";
+                document.getElementById("taddress").value = "";
+                document.getElementById("temail").value = "";
+                document.getElementById("tpassword").value = "";
+            }
+        });
+
+
+
+    }
+</script>
+
+</html>
